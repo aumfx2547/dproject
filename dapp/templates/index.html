@@ -1,0 +1,42 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<div class="mt-4 text-center text-4xl">
+    <h1 class="my-4">HTMX With Django</h1>
+    <div id="result">
+        Waiting for update...
+    </div>
+    <div class="my-4">
+        <button hx-get="{% url 'update_content' %}" hx-target="#result" hx-swap="outherHTML" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Click me to update
+        </button>
+    </div>
+
+    <form hx-post="{% url 'update_content2' %}" hx-target="#result2" hx-swap="innerHTML" class="my-4">
+        {% csrf_token %}
+        <input type="text" name="data" placeholder="Enter something" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4">
+        <button type="submit" class="btn-green mb-4">Submit</button>
+    </form>
+
+    <div id="result2">
+        Waiting for form submission..
+    </div>
+
+    <h1>Todo List</h1>
+    <form hx-post="{% url 'add_todo' %}" hx-target="#todo-list" hx-swap="beforeend" class="my-4">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="Enter something" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4">
+        <button type="submit" class="btn-green mb-4">Add Todo</button>
+    </form>
+
+    <ul id="todo-list">
+        {% for todo in todos %}
+            {% include 'todo_item.html' %}
+        {% endfor %}
+    </ul>
+
+</div>
+{% endblock content %}

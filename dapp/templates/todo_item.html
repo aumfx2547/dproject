@@ -1,0 +1,12 @@
+<li id="todo-{{ todo.id }}">
+    <span hx-get="{% url 'toggle_todo' todo.id %}" hx-target="#todo-{{ todo.id }}" hx-swap="outerHTML">
+        {% if todo.completed %}
+            <s>{{ todo.title }}</s>
+        {% else %}
+            {{ todo.title }}
+        {% endif %}
+    </span>
+    <button class="btn-blue mb-4 mr-1" hx-get="{% url 'edit_todo_form' todo.id %}" hx-target="#todo-{{ todo.id }}" hx-swap="outerHTML">Edit</button>
+    <button class="btn-red mb-4 mr-1" hx-confirm="Are you sure?" hx-delete="{% url 'delete_todo' todo.id %}"
+    hx-target="#todo-{{ todo.id }}" hx-swap="outerHTML">Delete</button>
+</li>
